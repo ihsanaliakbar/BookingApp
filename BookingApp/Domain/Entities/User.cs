@@ -3,7 +3,7 @@ namespace BookingApp.Domain.Entities;
 public enum UserRole
 {
     User= 0, 
-    Admin=1
+    Admin=1,
 }
 
 public class User

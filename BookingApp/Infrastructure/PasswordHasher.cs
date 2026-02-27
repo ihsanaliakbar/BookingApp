@@ -17,7 +17,7 @@ public class PasswordHasher
             );
 
         //store as: iterations.salt.hash (Base64)
-        return $"100000.{Convert.ToBase64String(hash)}.{Convert.ToBase64String(salt)}";
+        return $"100000.{Convert.ToBase64String(salt)}.{Convert.ToBase64String(hash)}";
     }
 
     public static bool Verify(string password, string stored)

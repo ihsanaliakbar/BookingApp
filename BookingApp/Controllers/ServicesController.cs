@@ -84,7 +84,7 @@ namespace BookingApp.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ServiceResponse>> Update(Guid id, UpdateServiceRequest req)
         {
-            var s = await _db.Services.FirstOrDefault(x => x.Id == id);
+            var s = await _db.Services.FirstOrDefaultAsync(x => x.Id == id);
             if (s is null) return NotFound();
             
             var name = req.Name.Trim();
@@ -97,7 +97,7 @@ namespace BookingApp.Controllers
             s.PriceCents = req.PriceCents;
             s.IsActive = req.IsActive;
 
-            _db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
 
             return Ok(new ServiceResponse(s.Id, s.Name, s.DurationMinutes, s.PriceCents, s.IsActive));
 

@@ -9,7 +9,12 @@ public static class DbSeeder
     public static async Task SeedAsync(AppDbContext db)
     {
         await db.Database.MigrateAsync(); //ensure db schema is up to date (dotnet ef database update)
-
+        await SeedAdmin(db);
+        await SeedServices(db);
+    }
+    
+    public static async Task SeedServices(AppDbContext db)
+    {
         if (! await db.Services.AnyAsync()) //only seed if no service
         {
             db.Services.AddRange(
@@ -38,6 +43,23 @@ public static class DbSeeder
             
             await db.SaveChangesAsync();
         }
+    }
+
+    public static async Task SeedAdmin(AppDbContext db)
+    {
+        var email = "admin@admin.com";
         
+        var exists = await db.Users.AnyAsync(u => u.Email == email);
+        if (exists) return;
+
+        var admin = new User
+        {
+            Email = email,
+            PasswordHash = PasswordHasher.Hash("admin123!"),
+            Role = UserRole.Admin
+        };
+        
+        db.Users.Add(admin);
+        await db.SaveChangesAsync();
     }
 }
